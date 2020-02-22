@@ -14,7 +14,7 @@ $ composer require twindots/email-service
 Service Provider & Facade will be discovered automatically by laravel. 
 **Publish the config file and views folder:** *(required)*
 ```bash
-$ php artisan vendor publish --provider="TwinDots\EmailService\EmailServiceProvider"
+$ php artisan vendor:publish --provider="TwinDots\EmailService\EmailServiceProvider"
 ```
 This will publish the following:
  - config/email_service.php
