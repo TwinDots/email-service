@@ -1,0 +1,27 @@
+{
+   "name": "twindots/email-service",
+   "description": "Compile shortcodes and send emails from predefined templates.",
+   "authors": [
+      {
+         "name": "Allen",
+         "email": "allen@twindots.com"
+      }
+   ],
+   "require": {},
+   "autoload": {
+     "psr-4": {
+       "TwinDots\\EmailService\\": "src/"
+     }
+   },
+   "extra": {
+      "laravel": {
+         "providers": [
+            "TwinDots\\EmailService\\EmailServiceProvider"
+         ],
+         "aliases": {
+            "EmailService": "TwinDots\\EmailService\\Services\\EmailService",
+            "EmailShortCode": "TwinDots\\EmailService\\Services\\EmailShortCodes"
+         }
+      }
+   }
+}
