@@ -1,10 +1,10 @@
-# Email service plugin for laravel 5|6
+# Email service plugin for laravel 5|6|7|8
 
 This package simplify compiling shortcodes and sending emails.
 
 ## Requirements
 - [PHP >= 7.0](http://php.net/)
-- [Laravel 5.x|6.x](https://github.com/laravel/framework)
+- [Laravel >=5.x(https://github.com/laravel/framework)
 
 ## Installation
 **Install this package with composer:**
