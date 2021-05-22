@@ -2,124 +2,168 @@
 
 namespace TwinDots\EmailService\Services;
 
+use Exception;
 use \Illuminate\Support\Facades\Mail;
 use TwinDots\EmailService\Mail\EmailTemplate;
 
-class EmailService {
+class EmailService
+{
 
-   /**
-    * Recipient email
-    * @var array
-    */
-   protected $email;
- 
-   /**
-    * Email subject
-    * @var String
-    */
-   protected $subject;
-
-   /**
-    * Email body
-    * @var text
-    */
-   protected $body;
-
-   /**
-    * Email attachments
-    * @var array
-    */
-   protected $attachments;
-
-   /**
-     * Create a new EmailService instance.
-     *
-     * @param  array  $email
-     * @param  String  $subject
-     * @param  text  $body
-     * @return void
+    /**
+     * Recipient email
+     * @var array|string
      */
-   public function __construct( $email = null, $subject = null, $body = null ){
+    protected string|array $email = '';
 
-      $this->email( $email );
-      $this->subject( $subject );
-      $this->body( $body );
+    /**
+     * CC
+     * @var array|string
+     */
+    protected string|array $cc = '';
 
-   }
+    /**
+     * BCC
+     * @var array|string
+     */
+    protected string|array $bcc = '';
 
-   /**
+    /**
+     * Email subject
+     * @var string
+     */
+    protected string $subject = '';
+
+    /**
+     * Email body
+     * @var string
+     */
+    protected string $body = '';
+
+    /**
+     * Email attachments
+     * @var array
+     */
+    protected array $attachments = [];
+
+    /**
+     * EmailService constructor.
+     * @param array|string|null $email
+     * @param string|null $subject
+     * @param string|null $body
+     */
+    public function __construct($email = null, $subject = null, $body = null)
+    {
+        if( $email )
+            $this->email($email);
+
+        if( $subject )
+            $this->subject($subject);
+
+        if( $body )
+            $this->body($body);
+    }
+
+    /**
      * Set the recipients emails.
-     *
-     * @param  array  $email  
-     * @return void
+     * @param array|string $email
+     * @return EmailService
      */
-   public function email( $email ){
-      $this->email = $email;
-      return $this;
-   } 
+    public function email(array|string $email): static
+    {
+        $this->email = $email;
+        return $this;
+    }
 
-   /**
+    /**
+     * Set the cc emails.
+     * @param array|string $cc
+     * @return EmailService
+     */
+    public function cc(array|string $cc): static
+    {
+        $this->cc = $cc;
+        return $this;
+    }
+
+    /**
+     * Set the bcc emails.
+     * @param array|string $bcc
+     * @return EmailService
+     */
+    public function bcc(array|string $bcc): static
+    {
+        $this->bcc = $bcc;
+        return $this;
+    }
+
+    /**
      * Set the email subject.
-     * 
-     * @param  String  $subject 
-     * @return void
+     * @param string $subject
+     * @return EmailService
      */
-   public function subject( $subject ){
-      $this->subject = $subject;
-      return $this;
-   }
+    public function subject(string $subject): static
+    {
+        $this->subject = $subject;
+        return $this;
+    }
 
-   /**
+    /**
      * Set the email body.
-     * 
-     * @param  text  $body
-     * @return void
+     * @param string $body
+     * @return EmailService
      */
-   public function body( $body ){
-      $this->body = $body;
-      return $this;
-   }
+    public function body(string $body): static
+    {
+        $this->body = $body;
+        return $this;
+    }
 
-   /**
+    /**
      * Set the email attachments.
-     *
-     * @param  array  $attachments 
-     * @return void
+     * @param array['attachment_name' => 'attachment_path'] $attachments
+     * @return EmailService
      */
-   public function attach( $attachments ){
-      $this->attachments = $attachments;
-      return $this;
-   }
+    public function attach(array $attachments): static
+    {
+        $this->attachments = $attachments;
+        return $this;
+    }
 
-   /**
-     * Send the email.
-     *
+    /**
+     * Send email
      * @return array
      */
-   public function send(){
+    public function send(): array
+    {
+        try {
 
-      try {
+            $mail = Mail::to($this->email);
 
-         Mail::to( $this->email )
-               ->send( 
-                  new EmailTemplate( 
-                     $this->subject, 
-                     $this->body,
-                     $this->attachments
-                  ) 
-               );
+            if( $this->cc )
+                $mail = $mail->cc($this->cc);
 
-         return [
-            'sent' => true, 
-         ];
+            if( $this->bcc )
+                $mail = $mail->bcc($this->bcc);
 
-      } catch (\Exception $e) {
-         
-         return [
-            'sent' => false,
-            'messasge' => $e->getMessage() 
-         ];
+            $mail->send(
+                new EmailTemplate(
+                    $this->subject,
+                    $this->body,
+                    $this->attachments
+                )
+            );
 
-      }
-   } 
+            return [
+                'sent' => true,
+            ];
+
+        } catch (Exception $e) {
+
+            return [
+                'sent' => false,
+                'message' => $e->getMessage()
+            ];
+
+        }
+    }
 }

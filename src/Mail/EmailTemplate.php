@@ -12,55 +12,51 @@ class EmailTemplate extends Mailable
     use Queueable, SerializesModels;
 
     /**
-    * Email body
-    * @var text
-    */
-    public $content;
-
-    /**
-    * Email Subject
-    * @var String
-    */
+     * @var string
+     */
     public $subject;
 
     /**
-    * Email attachments
-    * @var array
-    */
-    public $files;
+     * Email content
+     * @var string|null
+     */
+    public string|null $content;
 
     /**
-     * Create a new message instance.
-     *
-     * @param  String  $subject
-     * @param  text  $content
-     * @param  array  $files
-     * @return void
+     * Email attachments
+     * @var array
      */
-    public function __construct( $subject = null, $content = null, $files = [] )
+    public array $files;
+
+    /**
+     * EmailTemplate constructor.
+     * @param string $subject
+     * @param string|null $content
+     * @param array $files
+     */
+    public function __construct(string $subject, string|null $content = null, array $files = [])
     {
-      $this->content = $content;
-      $this->subject = $subject;
-      $this->files = $files;
+        $this->subject = $subject;
+        $this->content = $content;
+        $this->files = $files;
     }
 
     /**
-     * Build the message.
-     *
+     * Build email
      * @return $this
      */
-    public function build()
+    public function build(): static
     {
-      if( $this->subject )
-         $this->subject( $this->subject );
+        if ($this->subject)
+            $this->subject($this->subject);
 
-      $this->view( config('email_service.email_template') );
+        $this->view(config('email_service.email_template'));
 
-      if( !empty( $this->files ) )
-         foreach ($this->files as $name => $file) {
-            $this->attach( $file, [ 'as' => $name ]);
-         }
-           
-      return $this;
+        if (!empty($this->files))
+            foreach ($this->files as $name => $file) {
+                $this->attach($file, ['as' => $name]);
+            }
+
+        return $this;
     }
 }

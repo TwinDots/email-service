@@ -4,7 +4,7 @@ This package simplify compiling shortcodes and sending emails.
 
 ## Requirements
 - [PHP >= 7.0](http://php.net/)
-- [Laravel >=5.x(https://github.com/laravel/framework)
+- [Laravel >=5.x](https://github.com/laravel/framework)
 
 ## Installation
 **Install this package with composer:**
@@ -122,23 +122,26 @@ You can add 3 types of shortcodes:
 ### EmailShortCodes
  Methods          | Parameters         | Definition
 :-----------------|:-------------------|:-------------------
-compile()         | -                  | Will compile the **body** using the **shortcodes** list and **objects**
-body()            | *(text)* $body       | Set the body
-objects()         | *(array)* $objects   | Set the objects
-group()           | *(array)* $groups    | Set the group
-withUser()        | -                  | Add the user shortcode group to the shortcodes list
-getGroup()        | -                  | Return the group
-shortcodes()      | -                  | Return the shortcodes list
-objectsNeeded()   | -                  | Return the objects needed to compile
+compile()         | -                   | Will compile the **body** using the **shortcodes** list and **objects**
+body()            | String $body        | Set the body
+objects()         | Array $objects      | Set the objects
+group()           | String $group       | Set the group
+addGroup()        | String $group       | Add a new group to the group list
+withUser()        | -                   | Add the user shortcode group to the shortcodes list
+getGroup()        | -                   | Return the group
+shortcodes()      | -                   | Return the shortcodes list
+objectsNeeded()   | -                   | Return the objects needed to compile
 
 ### EmailService
  Methods          | Parameters         | Definition
 :-----------------|:-------------------|:-------------------
-email()           | *(string)* $email    | Set the email
-body()            | *(text)* $body       | Set the body
-subject()         | *(string)* $subject       | Set the subject
-attach()          | *(array)* $attachments   | Set the attachments
-send()            | -    | Send the email
+email()           | Array,String $email     | Set the recipient email
+cc()              | Array,String $cc        | Set cc
+bcc()             | Array,String $bcc       | Set bcc
+body()            | String $body            | Set the body
+subject()         | String $subject         | Set the subject
+attach()          | Array $attachments      | Set the attachments
+send()            | -                       | Send the email
 
 ## License
 The MIT License (MIT). Please see [License File](https://github.com/.../blob/master/LICENSE.md) for more information.
