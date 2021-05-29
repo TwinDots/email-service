@@ -136,6 +136,7 @@ objectsNeeded()   | -                   | Return the objects needed to compile
  Methods          | Parameters         | Definition
 :-----------------|:-------------------|:-------------------
 email()           | Array,String $email     | Set the recipient email
+replyTo()         | String $replyTo         | Set replyTo, will override the value in config.mail.reply_to
 cc()              | Array,String $cc        | Set cc
 bcc()             | Array,String $bcc       | Set bcc
 body()            | String $body            | Set the body

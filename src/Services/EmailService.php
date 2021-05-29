@@ -28,6 +28,12 @@ class EmailService
     protected string|array $bcc = '';
 
     /**
+     * Reply to email
+     * @var string
+     */
+    protected string $replyTo = '';
+
+    /**
      * Email subject
      * @var string
      */
@@ -97,6 +103,17 @@ class EmailService
     }
 
     /**
+     * Set the reply to email.
+     * @param string $replyTo
+     * @return EmailService
+     */
+    public function replyTo(string $replyTo): static
+    {
+        $this->replyTo = $replyTo;
+        return $this;
+    }
+
+    /**
      * Set the email subject.
      * @param string $subject
      * @return EmailService
@@ -149,7 +166,8 @@ class EmailService
                 new EmailTemplate(
                     $this->subject,
                     $this->body,
-                    $this->attachments
+                    $this->attachments,
+                    $this->replyTo
                 )
             );
 

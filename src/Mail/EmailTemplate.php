@@ -29,16 +29,29 @@ class EmailTemplate extends Mailable
     public array $files;
 
     /**
+     * Reply to
+     * @var string
+     */
+    public string $replyToEmail;
+
+    /**
      * EmailTemplate constructor.
      * @param string $subject
      * @param string|null $content
      * @param array $files
+     * @param string $replyToEmail
      */
-    public function __construct(string $subject, string|null $content = null, array $files = [])
+    public function __construct(
+        string $subject,
+        string|null $content = null,
+        array $files = [],
+        string $replyToEmail = '',
+    )
     {
         $this->subject = $subject;
         $this->content = $content;
         $this->files = $files;
+        $this->replyToEmail = $replyToEmail;
     }
 
     /**
@@ -49,6 +62,9 @@ class EmailTemplate extends Mailable
     {
         if ($this->subject)
             $this->subject($this->subject);
+
+        if( $this->replyToEmail )
+            $this->replyTo( $this->replyToEmail );
 
         $this->view(config('email_service.email_template'));
 
